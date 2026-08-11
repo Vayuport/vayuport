@@ -171,7 +171,7 @@ function initEarlyAccessForm(form) {
       // (Web3Forms is designed to have it exposed client-side, similar to
       // a reCAPTCHA site key). See README for the optional hidden-proxy
       // setup if you'd rather keep it out of the page source entirely.
-      access_key:process.env.WEB3FORMS_ACCESS_KEY,
+      access_key:"b53eff0d-3878-4f49-91af-e72dfce5311f",
       subject: `VAYUPORT Early Access — ${name}`,
       from_name: 'VAYUPORT Website',
       name,
