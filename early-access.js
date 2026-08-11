@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Early Access — VAYUPORT</title>
+<meta name="description" content="Be among the first to hear about VAYUPORT, upcoming developments and the future of air mobility in India.">
+<meta name="robots" content="noindex">
+
+<link rel="icon" href="assets/img/logo.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav is-scrolled">
+  <div class="container">
+    <a href="index.html" class="nav-brand" aria-label="VAYUPORT home">
+      <img src="assets/img/logo.png" alt="" width="28" height="28">
+      VAYUPORT
+    </a>
+    <nav class="nav-links" id="nav-links" aria-label="Primary">
+      <a href="index.html#about">About</a>
+      <a href="index.html#network">Network</a>
+      <a href="terms-and-conditions.html#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <svg class="icon-open" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6H19M3 11H19M3 16H19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="icon-close" style="display:none" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4L18 18M18 4L4 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="ea-page">
+    <div class="container ea-grid">
+
+      <div class="ea-intro reveal">
+        <p class="eyebrow">Early Access</p>
+        <h1>Get Early Access</h1>
+        <p>Be among the first to hear about VAYUPORT, upcoming developments and the future of air mobility in India.</p>
+        <a href="index.html" class="ea-back">← Back to VAYUPORT</a>
+      </div>
+
+      <div class="reveal">
+        <div class="form-panel" id="ea-form-panel">
+          <form id="early-access-form" novalidate>
+
+            <!-- honeypot: hidden from real users, bots often fill it -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required aria-describedby="name-error">
+              <p class="field-error" id="name-error">Please enter your name.</p>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="email-error">
+              <p class="field-error" id="email-error">Please enter a valid email address.</p>
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel" required aria-describedby="phone-error">
+              <p class="field-error" id="phone-error">Please enter a valid Indian phone number.</p>
+            </div>
+
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us how you'd like to connect with VAYUPORT." required aria-describedby="message-error"></textarea>
+              <p class="field-error" id="message-error">Please add a short message.</p>
+            </div>
+
+            <div class="field-check-wrap">
+              <div class="field-check">
+                <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error">
+                <label for="consent">I agree to be contacted by VAYUPORT regarding Early Access and related updates.</label>
+              </div>
+              <p class="field-error" id="consent-error">This is required to continue.</p>
+            </div>
+
+            <div class="field-check-wrap">
+              <div class="field-check">
+                <input type="checkbox" id="terms" name="terms" required aria-describedby="terms-error">
+                <label for="terms">I agree to the <a href="terms-and-conditions.html">Terms &amp; Conditions</a>.</label>
+              </div>
+              <p class="field-error" id="terms-error">Please accept the Terms &amp; Conditions.</p>
+            </div>
+
+            <div class="form-submit">
+              <button type="submit" class="btn btn-primary">Request Early Access <span class="btn-arrow">→</span></button>
+              <span class="form-status" role="status" aria-live="polite"></span>
+            </div>
+          </form>
+        </div>
+
+        <div class="form-panel success-panel" id="ea-success" role="status" aria-live="polite">
+          <p class="eyebrow">Confirmed</p>
+          <h2>You're on the list.</h2>
+          <p>Thank you for your interest in VAYUPORT. We'll be in touch soon.</p>
+          <p class="mono-detail">The future is taking shape.</p>
+          <a href="index.html" class="btn btn-ghost">Back to VAYUPORT</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" id="contact">
+      <span>© 2026 VAYUPORT All rights reserved.</span>
+      <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
