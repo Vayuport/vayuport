@@ -167,14 +167,20 @@ function initEarlyAccessForm(form) {
     const timestamp = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
 
     const payload = {
+      // Web3Forms access key — this is a public "site key", not a secret
+      // (Web3Forms is designed to have it exposed client-side, similar to
+      // a reCAPTCHA site key). See README for the optional hidden-proxy
+      // setup if you'd rather keep it out of the page source entirely.
+      access_key: process.env.WEB3FORMS_ACCESS_KEY,
+      subject: `VAYUPORT Early Access — ${name}`,
+      from_name: 'VAYUPORT Website',
       name,
       email,
       phone,
       message,
-      subject: `VAYUPORT Early Access — ${name}`,
-      consent,
-      terms,
-      timestamp,
+      'Consent to be contacted': consent,
+      'Agreed to Terms & Conditions': terms,
+      'Submitted': timestamp,
       botcheck: form.querySelector('#company').value, // honeypot, sent as-is
     };
 
@@ -182,10 +188,7 @@ function initEarlyAccessForm(form) {
     submitBtn.textContent = 'Sending…';
 
     try {
-      // Calls our own serverless function (api/early-access.js), which holds
-      // the Web3Forms access key server-side via an environment variable —
-      // the key never appears in this file or the page source.
-      const res = await fetch('/api/early-access', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +197,7 @@ function initEarlyAccessForm(form) {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || 'Request failed');
+      if (!res.ok || !data.success) throw new Error(data.message || 'Request failed');
       showSuccess();
     } catch (err) {
       statusEl.textContent = 'Something went wrong. Please try again.';
