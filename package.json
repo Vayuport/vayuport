@@ -1,6 +1,11 @@
-# Local environment variables — DO NOT COMMIT THIS FILE.
-# On Vercel, set the same variable under Project Settings → Environment
-# Variables instead of relying on this file (Vercel does not read .env
-# files from your repo by default).
-
-WEB3FORMS_ACCESS_KEY=b53eff0d-3878-4f49-91af-e72dfce5311f
+{
+  "name": "vayuport",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static landing page for VAYUPORT.",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "author": "",
+  "license": "UNLICENSED"
+}
