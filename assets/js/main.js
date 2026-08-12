@@ -104,7 +104,7 @@ if (typingText) {
     if (index < text.length) {
       typingText.textContent += text.charAt(index);
       index++;
-      setTimeout(typeText, 110);
+      setTimeout(typeText, 250);
     }
   }
 

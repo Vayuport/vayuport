@@ -112,7 +112,7 @@ body{
    Typography
    ========================================================= */
 .eyebrow {
-  font-family: "Space Mono", var(--font-mono), monospace;
+  font-family: "Orbitron", var(--font-mono), monospace;
   font-size: .72rem;
   font-weight: 400;
   letter-spacing: .28em;
