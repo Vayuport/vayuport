@@ -49,43 +49,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---- Video section: only load/play when in view (perf) ---- */
   const heroVideo = document.querySelector('[data-lazy-video]');
-  if (heroVideo) {
-    const source = heroVideo.querySelector('source');
-    const loadVideo = () => {
-      if (source && !source.getAttribute('src')) {
-        source.setAttribute('src', source.getAttribute('data-src'));
-        heroVideo.load();
-        heroVideo.play().catch(() => {});
-      }
-    };
-    if ('IntersectionObserver' in window) {
-      const vio = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            loadVideo();
-            vio.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      vio.observe(heroVideo);
-    } else {
-      loadVideo();
-    }
-  }
- const video = document.querySelector('video[data-lazy-video]');
 
-  video.addEventListener('loadedmetadata', () => {
-    video.currentTime = 0;
-    video.playbackRate = 0.8;
-    video.play();
+if (heroVideo) {
+  const source = heroVideo.querySelector('source');
+
+  // Set video properties before loading
+  heroVideo.addEventListener('loadedmetadata', () => {
+    heroVideo.currentTime = 0;
+    heroVideo.playbackRate = 0.8;
+    heroVideo.play().catch(() => {});
   });
 
-  video.addEventListener('timeupdate', () => {
+  // Loop video around 7 seconds
+  heroVideo.addEventListener('timeupdate', () => {
     // Jump back slightly before 7s to avoid a visible pause
-    if (video.currentTime >= 6.95) {
-      video.currentTime = 0;
+    if (heroVideo.currentTime >= 6.95) {
+      heroVideo.currentTime = 0;
     }
   });
+
+  const loadVideo = () => {
+    if (source && !source.getAttribute('src')) {
+      source.setAttribute('src', source.getAttribute('data-src'));
+      heroVideo.load();
+      heroVideo.play().catch(() => {});
+    }
+  };
+
+  // Lazy-load video when it enters the viewport
+  if ('IntersectionObserver' in window) {
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadVideo();
+          vio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    vio.observe(heroVideo);
+  } else {
+    loadVideo();
+  }
+}
+
   /* ---- Early Access form ---- */
   const form = document.getElementById('early-access-form');
   if (form) initEarlyAccessForm(form);
