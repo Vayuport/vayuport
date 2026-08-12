@@ -72,7 +72,20 @@ document.addEventListener('DOMContentLoaded', () => {
       loadVideo();
     }
   }
+ const video = document.querySelector('video[data-lazy-video]');
 
+  video.addEventListener('loadedmetadata', () => {
+    video.currentTime = 0;
+    video.playbackRate = 0.8;
+    video.play();
+  });
+
+  video.addEventListener('timeupdate', () => {
+    // Jump back slightly before 7s to avoid a visible pause
+    if (video.currentTime >= 6.95) {
+      video.currentTime = 0;
+    }
+  });
   /* ---- Early Access form ---- */
   const form = document.getElementById('early-access-form');
   if (form) initEarlyAccessForm(form);
