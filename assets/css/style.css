@@ -111,26 +111,38 @@ body{
 /* =========================================================
    Typography
    ========================================================= */
-.eyebrow{
-  font-family:"Space Mono", var(--font-mono), monospace;
-  font-size:.72rem;
-  font-weight:400;
-  letter-spacing:.28em;
-  text-transform:uppercase;
-  color:var(--g-300);
-  display:inline-flex;
-  align-items:center;
-  gap:.7em;
-  text-shadow:0 0 12px rgba(180,220,255,.25);
+.eyebrow {
+  font-family: "Space Mono", var(--font-mono), monospace;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--g-300);
+  display: inline-flex;
+  align-items: center;
+  gap: .7em;
+  text-shadow: 0 0 12px rgba(180,220,255,.25);
+  white-space: nowrap;
 }
 
-.eyebrow::before{
-  content:'';
-  width:22px;
-  height:1px;
-  background:var(--g-500);
-  display:inline-block;
-  box-shadow:0 0 8px var(--g-500);
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--g-500);
+  display: inline-block;
+  box-shadow: 0 0 8px var(--g-500);
+}
+
+.cursor {
+  color: var(--g-300);
+  animation: blink .8s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 h1,h2,h3{
