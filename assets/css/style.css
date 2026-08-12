@@ -113,7 +113,7 @@ body{
    ========================================================= */
 .eyebrow {
   font-family: "Orbitron", var(--font-mono), monospace;
-  font-size: .72rem;
+  font-size: .92rem;
   font-weight: 400;
   letter-spacing: .28em;
   text-transform: uppercase;
@@ -269,10 +269,10 @@ h1,h2,h3{
   gap:.6rem;
   font-family:var(--font-display);
   font-weight:600;
-  font-size:1.05rem;
-  letter-spacing:.02em;
+  font-size:1.04rem;
+  letter-spacing:.10em;
 }
-.nav-brand img{ height:28px; width:auto; }
+.nav-brand img{ height:50px; width:auto; }
 
 .nav-links{
   display:flex;
