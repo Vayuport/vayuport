@@ -1,3 +1,4 @@
+
 // =========================================================
 // VAYUPORT — shared behaviour
 // =========================================================
@@ -91,6 +92,23 @@ if (heroVideo) {
   } else {
     loadVideo();
   }
+}
+/* ---- Typing animation ---- */
+const typingText = document.getElementById('typing-text');
+
+if (typingText) {
+  const text = 'Launching Soon...';
+  let index = 0;
+
+  function typeText() {
+    if (index < text.length) {
+      typingText.textContent += text.charAt(index);
+      index++;
+      setTimeout(typeText, 110);
+    }
+  }
+
+  typeText();
 }
 
   /* ---- Early Access form ---- */

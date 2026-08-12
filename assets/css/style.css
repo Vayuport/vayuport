@@ -112,20 +112,25 @@ body{
    Typography
    ========================================================= */
 .eyebrow{
-  font-family:var(--font-mono);
+  font-family:"Space Mono", var(--font-mono), monospace;
   font-size:.72rem;
-  letter-spacing:.22em;
+  font-weight:400;
+  letter-spacing:.28em;
   text-transform:uppercase;
   color:var(--g-300);
   display:inline-flex;
   align-items:center;
-  gap:.6em;
+  gap:.7em;
+  text-shadow:0 0 12px rgba(180,220,255,.25);
 }
+
 .eyebrow::before{
   content:'';
-  width:22px; height:1px;
+  width:22px;
+  height:1px;
   background:var(--g-500);
   display:inline-block;
+  box-shadow:0 0 8px var(--g-500);
 }
 
 h1,h2,h3{
@@ -278,7 +283,7 @@ h1,h2,h3{
   padding:.4rem;
   color:var(--off-white);
 }
-.nav-toggle svg{ display:block; }
+.nav-toggle svg{ display:none; }
 
 @media (max-width: 780px){
   .nav-links{
