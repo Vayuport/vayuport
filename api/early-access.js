@@ -1,25 +1,17 @@
 // =========================================================
-// VAYUPORT — Early Access lead handler (OPTIONAL hidden-key proxy)
+// VAYUPORT — Early Access lead handler (hidden-key proxy)
 // =========================================================
-// The live site currently calls Web3Forms directly from the browser
-// (see assets/js/main.js), which is how Web3Forms is designed to be used —
-// its access key is a public "site key", not a secret.
+// The browser sends the early access form here (endpoint: '/api/early-access'
+// in assets/js/main.js). This function adds the Web3Forms key on the server,
+// so the key never appears in the page source or the Network tab.
 //
-// This file is an OPTIONAL alternative for anyone who wants the access
-// key to never appear in the page source at all. It's a reference
-// serverless function (Vercel-style `api/*.js` routing) that reads the
-// key from a server-side environment variable and forwards the request
-// to Web3Forms on the visitor's behalf. It is NOT wired up by default —
-// the frontend calls Web3Forms directly unless you deploy this and swap
-// the fetch URL in assets/js/main.js back to '/api/early-access'.
-//
-// Environment variable to set on your hosting platform (never in code):
-//   WEB3FORMS_ACCESS_KEY   — your Web3Forms access key
+// Environment variable (set in .env locally and in Vercel → Settings →
+// Environment Variables):
+//   WEB3FORMS_EARLY_ACCESS_KEY  — your Early Access Web3Forms key
 
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX = 5; // max submissions per IP per window
-const rateLimitStore = new Map(); // NOTE: in-memory only — swap for
-// Redis/Upstash/KV in a real multi-instance deployment.
+const rateLimitStore = new Map(); // in-memory only (resets per instance)
 
 function isRateLimited(ip) {
   const now = Date.now();
@@ -48,21 +40,28 @@ function sanitize(str, maxLen = 2000) {
     .replace(/[\u0000-\u001F\u007F]/g, ''); // strip control characters
 }
 
+function fail(res, status, message) {
+  // main.js reads `success` and `message`
+  res.status(status).json({ success: false, message });
+}
+
+function istTimestamp() {
+  return new Date().toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+}
+
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
+  if (req.method !== 'POST') return fail(res, 405, 'Method not allowed');
 
   const ip =
     req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
     req.socket?.remoteAddress ||
     'unknown';
 
-  if (isRateLimited(ip)) {
-    res.status(429).json({ error: 'Too many requests. Please try again shortly.' });
-    return;
-  }
+  if (isRateLimited(ip)) return fail(res, 429, 'Too many requests. Please try again shortly.');
 
   let body = req.body;
   if (typeof body === 'string') {
@@ -72,54 +71,33 @@ module.exports = async function handler(req, res) {
 
   // Honeypot: if this hidden field is filled, silently accept without emailing.
   if (body.botcheck && String(body.botcheck).trim() !== '') {
-    res.status(200).json({ success: true });
-    return;
+    return res.status(200).json({ success: true });
   }
 
   const name = sanitize(body.name, 200);
   const email = sanitize(body.email, 200);
   const phone = sanitize(body.phone, 40);
   const message = sanitize(body.message, 2000);
-  const consent = body.consent === 'Yes' || body.consent === true;
-  const terms = body.terms === 'Yes' || body.terms === true;
+  // Field names match what main.js sends
+  const consent = body['Consent to be contacted'] === 'Yes';
+  const terms = body['Agreed to Terms & Conditions'] === 'Yes';
 
-  if (!name || name.length < 2) {
-    res.status(400).json({ error: 'Invalid name' });
-    return;
-  }
-  if (!isValidEmail(email)) {
-    res.status(400).json({ error: 'Invalid email' });
-    return;
-  }
-  if (!isValidPhone(phone)) {
-    res.status(400).json({ error: 'Invalid phone number' });
-    return;
-  }
-  if (!message || message.length < 5) {
-    res.status(400).json({ error: 'Invalid message' });
-    return;
-  }
-  if (!consent || !terms) {
-    res.status(400).json({ error: 'Consent required' });
-    return;
-  }
+  if (name.length < 2) return fail(res, 400, 'Invalid name');
+  if (!isValidEmail(email)) return fail(res, 400, 'Invalid email');
+  if (!isValidPhone(phone)) return fail(res, 400, 'Invalid phone number');
+  if (message.length < 5) return fail(res, 400, 'Invalid message');
+  if (!consent || !terms) return fail(res, 400, 'Consent required');
 
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  const accessKey = process.env.WEB3FORMS_EARLY_ACCESS_KEY;
   if (!accessKey) {
-    console.error('Missing WEB3FORMS_ACCESS_KEY environment variable.');
-    res.status(500).json({ error: 'Server not configured' });
-    return;
+    console.error('Missing WEB3FORMS_EARLY_ACCESS_KEY environment variable.');
+    return fail(res, 500, 'Server not configured');
   }
-
-  const timestamp = new Date().toISOString();
 
   try {
     const w3fRes = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         access_key: accessKey,
         subject: `VAYUPORT Early Access — ${name}`,
@@ -130,21 +108,19 @@ module.exports = async function handler(req, res) {
         message,
         'Consent to be contacted': 'Yes',
         'Agreed to Terms & Conditions': 'Yes',
-        Submitted: timestamp,
+        Submitted: istTimestamp(),
       }),
     });
 
-    const data = await w3fRes.json();
+    const data = await w3fRes.json().catch(() => ({}));
     if (!w3fRes.ok || !data.success) {
-      console.error('Web3Forms error:', data);
-      res.status(502).json({ error: 'Email delivery failed' });
-      return;
+      console.error('Web3Forms error:', w3fRes.status, data);
+      return fail(res, 502, 'Email delivery failed');
     }
 
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error('Unexpected error sending lead email:', err);
-    res.status(500).json({ error: 'Unexpected server error' });
+    return fail(res, 500, 'Unexpected server error');
   }
 };
-

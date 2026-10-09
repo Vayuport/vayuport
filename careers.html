@@ -24,6 +24,22 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css">
+
+
+<style>
+  #devtools-notice {
+    position: fixed; top: 20px; right: 20px; max-width: 320px;
+    padding: 14px 18px; background: #b42318; color: #fff;
+    border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    font-family: 'Inter', system-ui, sans-serif; font-size: 15px;
+    opacity: 0; transform: translateY(-10px); pointer-events: none;
+    transition: opacity .25s, transform .25s; z-index: 9999;
+  }
+  #devtools-notice.show { opacity: 1; transform: translateY(0); }
+</style>
+
+
+  
 </head>
 
 <body>
@@ -181,6 +197,38 @@
   <script src="assets/js/main.js"></script>
   <!-- Web3Forms client script: loads hCaptcha for the careers form -->
   <script src="https://web3forms.com/client/script.js" async defer></script>
+
+  <div id="devtools-notice" role="alert"></div>
+<script>
+  (function () {
+    const notice = document.getElementById('devtools-notice');
+    let hideTimer;
+    function showNotice(msg) {
+      notice.textContent = msg;
+      notice.classList.add('show');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => notice.classList.remove('show'), 2500);
+    }
+    document.addEventListener('keydown', (e) => {
+      const key = (e.key || '').toUpperCase();
+      const ctrlOrCmd = e.ctrlKey || e.metaKey;
+      const blocked =
+        key === 'F12' ||
+        (ctrlOrCmd && e.shiftKey && ['I','J','C','K'].includes(key)) ||
+        (e.metaKey && e.altKey && ['I','J','C'].includes(key)) ||
+        (ctrlOrCmd && (key === 'U' || key === 'S'));
+      if (blocked) {
+        e.preventDefault();
+        e.stopPropagation();
+        showNotice('⚠️ Inspect mode is disabled on this page.');
+      }
+    });
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      showNotice('⚠️ Right-click is disabled on this page.');
+    });
+  })();
+</script>
 </body>
 
 </html>
