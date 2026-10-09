@@ -831,6 +831,50 @@ section{ position:relative; }
 .terms-body p + p{ margin-top:.9rem; }
 .terms-back{ margin-top:3.5rem; }
 
+
+/* =========================================================
+   Careers page — file upload field
+   (Paste into style.css right after the "/* form  block, e.g. below `.field textarea{ min-height:110px; resize:vertical; }`)
+   ========================================================= */
+.field input[type="file"]{
+  padding:.55rem .6rem;
+  font-size:.9rem;
+  color:var(--grey-300);
+  cursor:pointer;
+}
+.field input[type="file"]::file-selector-button{
+  margin-right:1rem;
+  padding:.55rem 1rem;
+  border:1px solid var(--c-line-strong);
+  border-radius:4px;
+  background:var(--c-800);
+  color:var(--off-white);
+  font-family:var(--font-mono);
+  font-size:.78rem;
+  letter-spacing:.05em;
+  cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.field input[type="file"]:hover::file-selector-button,
+.field input[type="file"]:focus-visible::file-selector-button{
+  border-color:var(--g-500);
+  color:var(--g-300);
+}
+ 
+/* =========================================================
+   Careers page — hCaptcha
+   ========================================================= */
+.field-captcha .h-captcha{ min-height:78px; } /* reserve space, avoid layout jump */
+.field-captcha.has-error .h-captcha iframe{
+  outline:1px solid #c76a5c;
+  outline-offset:2px;
+  border-radius:4px;
+}
+/* hCaptcha's widget is a fixed 303px wide; shrink it on very narrow screens */
+@media (max-width:380px){
+  .field-captcha .h-captcha{ transform:scale(.88); transform-origin:left top; }
+}
+
 /* =========================================================
    Utility
    ========================================================= */
