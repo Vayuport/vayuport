@@ -11,7 +11,7 @@ const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 const LEAD_FORMS = {
   'early-access-form': {
     endpoint: WEB3FORMS_ENDPOINT,
-    accessKey: null, // Early Access key
+    accessKey: 'b53eff0d-3878-4f49-91af-e72dfce5311f', // Early Access key
     subjectPrefix: 'VAYUPORT Early Access',
     fromName: 'VAYUPORT Website',
     buttonHtml: 'Request Early Access <span class="btn-arrow">→</span>',
@@ -23,7 +23,7 @@ const LEAD_FORMS = {
     // "Careers API" key from your Web3Forms dashboard — paste it here.
     // If you deploy api/careers.js instead, set endpoint to '/api/careers'
     // and accessKey to null (the server adds the key).
-    accessKey: null,
+    accessKey: 'bff89d72-4cc2-4283-911c-4b0eeed8e7a1',
     subjectPrefix: 'VAYUPORT Careers Application',
     fromName: 'VAYUPORT Careers',
     buttonHtml: 'Submit Application <span class="btn-arrow">→</span>',
